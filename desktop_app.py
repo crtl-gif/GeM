@@ -32,6 +32,7 @@ class Window(QMainWindow):
   top=QFrame(); top.setObjectName("top"); row=QHBoxLayout(top); row.setContentsMargins(16,10,16,10)
   labels=QVBoxLayout(); brand=QLabel("GeM Tender Assistant"); brand.setObjectName("brand"); sub=QLabel("Tender preparation workspace · human-reviewed"); sub.setObjectName("sub")
   labels.addWidget(brand); labels.addWidget(sub); row.addLayout(labels); row.addStretch()
+  login=QPushButton("Open GeM login"); login.clicked.connect(lambda:self.browser.setUrl(QUrl("https://sso.gem.gov.in/ARXSSO/oauth/doLogin"))); row.addWidget(login)
   home=QPushButton("Open GeM home"); home.setObjectName("secondary"); home.clicked.connect(lambda:self.browser.setUrl(QUrl(PORTAL))); row.addWidget(home); outer.addWidget(top)
   split=QSplitter(Qt.Orientation.Horizontal); split.setChildrenCollapsible(False); split.addWidget(self.browser_panel()); split.addWidget(self.controls_panel())
   split.setStretchFactor(0,7); split.setStretchFactor(1,3); split.setSizes([1120,480]); outer.addWidget(split,1)
@@ -50,7 +51,7 @@ class Window(QMainWindow):
   go=QPushButton("Go"); go.setMaximumWidth(55); go.clicked.connect(self.navigate); nav.addWidget(go); l.addLayout(nav)
   self.browser=QWebEngineView(); self.browser.setUrl(QUrl(PORTAL)); self.browser.urlChanged.connect(lambda u:self.url.setText(u.toString()))
   self.browser.loadFinished.connect(self.page_loaded); l.addWidget(self.browser,1)
-  note=QLabel("Solve CAPTCHA yourself. If login fields are not detected, type directly into the portal."); note.setWordWrap(True); note.setObjectName("muted"); l.addWidget(note)
+  note=QLabel("Use Open GeM login to reach the official sign-in page. Solve CAPTCHA yourself; if fields are not detected, type directly into the portal."); note.setWordWrap(True); note.setObjectName("muted"); l.addWidget(note)
   return f
  def page_loaded(self,ok):
   self.status.setText("GeM page loaded. Review before proceeding." if ok else "The page did not load. Check internet or press Reload.")
@@ -87,7 +88,7 @@ class Window(QMainWindow):
   self.checks=[]
   for name in DOCS:
    cb=QCheckBox(name); self.checks.append(cb); d.addWidget(cb)
-  c.addWidget(d)
+  c.addLayout(d)
   act=self.card("5 · Review"); e=act.layout()
   missing=QPushButton("Show missing documents"); missing.setObjectName("secondary"); missing.clicked.connect(self.missing); e.addWidget(missing)
   copy=QPushButton("Copy tender plan"); copy.clicked.connect(self.copy_plan); e.addWidget(copy)
