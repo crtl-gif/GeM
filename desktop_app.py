@@ -35,9 +35,11 @@ class Window(QMainWindow):
   labels.addWidget(brand); labels.addWidget(sub); row.addLayout(labels); row.addStretch()
   login=QPushButton("Open GeM login"); login.clicked.connect(lambda:self.browser.setUrl(QUrl("https://sso.gem.gov.in/ARXSSO/oauth/doLogin"))); row.addWidget(login)
   home=QPushButton("Open GeM home"); home.setObjectName("secondary"); home.clicked.connect(lambda:self.browser.setUrl(QUrl(PORTAL))); row.addWidget(home); outer.addWidget(top)
+  # Create status before controls_panel(), because the bid-search panel receives it.
+  self.status=QLabel("Ready. API keys are stored in your operating system's credential store."); self.status.setObjectName("muted")
   split=QSplitter(Qt.Orientation.Horizontal); split.setChildrenCollapsible(False); split.addWidget(self.browser_panel()); split.addWidget(self.controls_panel())
   split.setStretchFactor(0,7); split.setStretchFactor(1,3); split.setSizes([1120,480]); outer.addWidget(split,1)
-  self.status=QLabel("Ready. API keys are stored in your operating system's credential store."); self.status.setObjectName("muted"); outer.addWidget(self.status)
+  outer.addWidget(self.status)
   QSettings("GeM","TenderAssistant").setValue("last_version","1")
  def card(self,title):
   f=QFrame(); f.setObjectName("card"); l=QVBoxLayout(f); l.setContentsMargins(12,10,12,10); l.setSpacing(6)
