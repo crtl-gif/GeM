@@ -5,7 +5,7 @@ bypass login/CAPTCHA or submit bids.
 """
 import json
 import re
-from PySide6.QtCore import Qt, QTimer
+from PySide6.QtCore import Qt, QTimer, QUrl
 from PySide6.QtWidgets import (
     QWidget, QVBoxLayout, QHBoxLayout, QLabel, QLineEdit, QComboBox,
     QPushButton, QListWidget, QListWidgetItem, QTextEdit, QMessageBox
@@ -120,7 +120,7 @@ class BidSearchPanel(QWidget):
         self.search_btn.setEnabled(False)
         self.status.setText("Opening GeM advance search and applying filters…")
         if "all-bids" not in self.browser.url().toString():
-            self.browser.setUrl(__import__("PySide6").QtCore.QUrl(ADVANCE_URL))
+            self.browser.setUrl(QUrl(ADVANCE_URL))
             QTimer.singleShot(1800, lambda: self._run_search(mode))
         else:
             self._run_search(mode)
