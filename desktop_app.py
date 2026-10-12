@@ -5,6 +5,7 @@ from PySide6.QtWidgets import (QApplication,QCheckBox,QComboBox,QFrame,QHBoxLayo
  QLineEdit,QMainWindow,QMessageBox,QPushButton,QScrollArea,QSplitter,QVBoxLayout,QWidget)
 from PySide6.QtWebEngineWidgets import QWebEngineView
 import keyring
+from gem_bid_search import BidSearchPanel
 
 PORTAL="https://gem.gov.in/"
 KEYRING_SERVICE="GeM Tender Assistant"
@@ -63,6 +64,8 @@ class Window(QMainWindow):
   w=QWidget(); w.setMinimumWidth(300); scroll=QScrollArea(); scroll.setWidgetResizable(True); scroll.setFrameShape(QFrame.Shape.NoFrame)
   box=QVBoxLayout(w); box.setContentsMargins(0,0,0,0); box.addWidget(scroll)
   body=QWidget(); scroll.setWidget(body); c=QVBoxLayout(body); c.setContentsMargins(0,0,0,0); c.setSpacing(8)
+  search=self.card("3 · Live bid discovery & recommendations"); search.layout().addWidget(BidSearchPanel(self.browser, self.status))
+  c.addWidget(search)
   login=self.card("1 · Portal sign-in"); a=login.layout()
   a.addWidget(self.fieldlabel("User ID / email / mobile")); self.uid=QLineEdit(); self.uid.setPlaceholderText("GeM login ID"); a.addWidget(self.uid)
   a.addWidget(self.fieldlabel("Password")); self.pwd=QLineEdit(); self.pwd.setEchoMode(QLineEdit.EchoMode.Password); self.pwd.setPlaceholderText("Password (not saved)"); a.addWidget(self.pwd)
